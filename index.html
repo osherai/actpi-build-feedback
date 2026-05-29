@@ -1,0 +1,485 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+  <meta charset="utf-8" />
+  <title>ACTPI portal: have a play and tell us what you think</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    :root {
+      --primary: #09615A;
+      --primary-hover: #04454D;
+      --sidebar: #04454D;
+      --accent: #F0FDFA;
+      --background: #FAF8F5;
+      --border: #E7E3DE;
+      --subtle-border: #F1ECE6;
+      --foreground: #1A1A1A;
+      --muted-foreground: #6B6862;
+      --warning: #D97706; --warning-bg: #FEF3C7;
+      --success: #059669; --success-bg: #D1FAE5;
+      --danger: #DC2626;  --danger-bg: #FEE2E2;
+    }
+    html { background: var(--background); scroll-behavior: smooth; }
+    body { font-family: 'DM Sans', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif; color: var(--foreground); }
+    h1, h2, h3, h4 { font-family: 'DM Sans', ui-sans-serif, system-ui, sans-serif; letter-spacing: -0.3px; }
+    .mono { font-family: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace; }
+
+    .card { background: white; border: 1px solid var(--border); border-radius: 12px; box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04); }
+    .callout { border-left: 3px solid; padding: 12px 14px; border-radius: 6px; font-size: 13px; }
+    .callout.info { background: var(--accent); border-color: var(--primary); color: #1A1A1A; }
+    .callout.warn { background: var(--warning-bg); border-color: var(--warning); color: #78350F; }
+
+    .area { padding: 18px 20px; }
+    .area-step { font-size: 11px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; color: var(--primary); }
+    .area-title { font-weight: 700; font-size: 18px; line-height: 1.3; margin-top: 2px; }
+    .area-do { font-size: 14px; color: var(--foreground); margin-top: 8px; line-height: 1.55; }
+    .area-do code { font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 12px; padding: 1px 6px; background: var(--subtle-border); border-radius: 3px; }
+
+    .rating { display: flex; gap: 8px; margin-top: 14px; flex-wrap: wrap; }
+    .rate-btn { padding: 7px 14px; border-radius: 999px; font-size: 13px; font-weight: 500; cursor: pointer; border: 1px solid var(--border); background: white; color: var(--muted-foreground); font-family: inherit; transition: all 0.12s ease; }
+    .rate-btn:hover { transform: translateY(-1px); border-color: var(--muted-foreground); }
+    .rate-btn.sel-good    { background: var(--success-bg); color: #065F46; border-color: var(--success); font-weight: 600; }
+    .rate-btn.sel-meh     { background: var(--warning-bg); color: #78350F; border-color: var(--warning); font-weight: 600; }
+    .rate-btn.sel-bad     { background: var(--danger-bg);  color: #7F1D1D; border-color: var(--danger);  font-weight: 600; }
+
+    .note-box { margin-top: 12px; width: 100%; min-height: 64px; padding: 10px 12px; font-family: inherit; font-size: 14px; color: var(--foreground); background: white; border: 1px solid var(--border); border-radius: 8px; resize: vertical; }
+    .note-box::placeholder { color: #B6B1A9; }
+    .note-box:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 2px rgba(9, 97, 90, 0.15); }
+    .note-box.has-text { border-color: var(--primary); background: #FCFEFD; }
+
+    .field-label { font-size: 13px; font-weight: 600; color: var(--foreground); }
+    .text-input, .select-input { width: 100%; padding: 9px 12px; font-family: inherit; font-size: 14px; color: var(--foreground); background: white; border: 1px solid var(--border); border-radius: 8px; margin-top: 6px; }
+    .text-input:focus, .select-input:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 2px rgba(9, 97, 90, 0.15); }
+    .text-input.invalid, .select-input.invalid { border-color: var(--danger); box-shadow: 0 0 0 2px rgba(220, 38, 38, 0.15); }
+
+    .progress-bar { height: 6px; background: var(--subtle-border); border-radius: 999px; overflow: hidden; }
+    .progress-bar > span { display: block; height: 100%; background: var(--success); transition: width 0.3s ease; }
+
+    .section-nav { position: sticky; top: 0; z-index: 30; background: rgba(250, 248, 245, 0.95); backdrop-filter: blur(8px); border-bottom: 1px solid var(--border); }
+    .section-nav .nav-links { overflow-x: auto; white-space: nowrap; }
+    .section-nav a { color: var(--muted-foreground); padding: 10px 12px; font-size: 12px; display: inline-block; border-bottom: 2px solid transparent; transition: all 0.15s ease; text-decoration: none; }
+    .section-nav a:hover { color: var(--primary); }
+    .section-nav a.active { color: var(--primary); border-bottom-color: var(--primary); font-weight: 600; }
+    section[id] { scroll-margin-top: 110px; }
+
+    .save-bar { position: sticky; bottom: 0; background: white; border-top: 1px solid var(--border); padding: 12px 16px; display: flex; align-items: center; gap: 12px; box-shadow: 0 -2px 6px rgba(15, 23, 42, 0.04); z-index: 20; flex-wrap: wrap; }
+    .save-bar .count { font-size: 12px; color: var(--muted-foreground); }
+    .save-bar button { padding: 9px 16px; border-radius: 6px; font-size: 13px; font-weight: 500; cursor: pointer; border: 1px solid transparent; font-family: inherit; }
+    .save-bar button.primary { background: var(--primary); color: white; }
+    .save-bar button.primary:hover { background: var(--primary-hover); }
+    .save-bar button.primary:disabled { opacity: 0.5; cursor: default; }
+    .save-bar button.secondary { background: white; color: var(--foreground); border-color: var(--border); }
+    .save-bar button.secondary:hover { border-color: var(--primary); color: var(--primary); }
+    .save-bar .toast { font-size: 12px; opacity: 0; transition: opacity 0.3s ease; }
+    .save-bar .toast.show { opacity: 1; }
+    .save-bar .toast.ok { color: var(--success); }
+    .save-bar .toast.err { color: var(--danger); }
+
+    .modal-overlay { position: fixed; inset: 0; background: rgba(4, 69, 77, 0.55); backdrop-filter: blur(3px); display: none; align-items: center; justify-content: center; z-index: 100; padding: 24px; }
+    .modal-overlay.show { display: flex; }
+    .modal-card { background: white; border-radius: 16px; padding: 32px 28px; max-width: 420px; width: 100%; text-align: center; box-shadow: 0 20px 50px rgba(15, 23, 42, 0.25); animation: pop 0.18s ease-out; }
+    @keyframes pop { from { transform: scale(0.94); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+    .modal-close { margin-top: 18px; padding: 10px 22px; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; border: none; background: var(--primary); color: white; font-family: inherit; }
+    .modal-close:hover { background: var(--primary-hover); }
+  </style>
+</head>
+<body class="min-h-screen">
+  <header class="text-white" style="background: var(--sidebar)">
+    <div class="max-w-3xl mx-auto px-6 py-8">
+      <p class="text-xs uppercase tracking-widest" style="color:#5EEAD4">ACTPI portal · your feedback</p>
+      <h1 class="text-3xl md:text-4xl font-bold mt-1">Have a play, tell us what you think</h1>
+      <p class="text-sm mt-3 opacity-90" style="color:#E7E3DE; line-height:1.6">
+        We have built the first version of the new booking portal and we would love your honest take before we build much more.
+        There are no wrong answers here. You know how the work actually runs, so if something feels clunky, confusing, or missing, that is exactly what we need to hear.
+        Work through the areas below at your own pace, give each a quick rating, and jot down anything that comes to mind.
+        Hit <strong>Submit feedback</strong> at the bottom when you are done. It saves as you go, so you can stop and come back.
+      </p>
+      <div class="mt-5 flex flex-wrap items-center gap-3 text-xs">
+        <span class="px-3 py-1.5 rounded" style="background: rgba(255,255,255,0.1)">Portal: <a class="mono underline" style="color:#5EEAD4" href="https://actpi-dev.osherdigital.com" target="_blank" rel="noreferrer">actpi-dev.osherdigital.com</a></span>
+        <span class="px-3 py-1.5 rounded" style="background: rgba(255,255,255,0.1)">Ping Nicholas for your sign-in</span>
+      </div>
+    </div>
+  </header>
+
+  <nav class="section-nav">
+    <div class="max-w-3xl mx-auto px-6">
+      <div class="nav-links" id="section-nav-links"></div>
+      <div class="flex items-center gap-3 py-2">
+        <span class="text-xs uppercase tracking-wider" style="color:var(--muted-foreground)">Progress</span>
+        <div class="progress-bar flex-1"><span id="progress" style="width: 0%"></span></div>
+        <span class="mono text-xs" id="progress-label">0 / 0</span>
+      </div>
+    </div>
+  </nav>
+
+  <main class="max-w-3xl mx-auto px-6 py-8 space-y-5">
+
+    <!-- Who are you -->
+    <section class="card area" id="sec-you">
+      <div class="area-step">First up</div>
+      <div class="area-title">Who are you?</div>
+      <p class="area-do">So we know whose feedback this is and can follow up if we need to.</p>
+      <div class="mt-4 grid md:grid-cols-2 gap-4">
+        <div>
+          <label class="field-label" for="resp-name">Your name <span style="color:var(--danger)">*</span></label>
+          <input class="text-input" id="resp-name" type="text" placeholder="e.g. Ash" />
+        </div>
+        <div>
+          <label class="field-label" for="resp-team">Your team <span style="color:var(--danger)">*</span></label>
+          <select class="select-input" id="resp-team">
+            <option value="">Choose one</option>
+            <option>Bookings / scheduling</option>
+            <option>Prepping</option>
+            <option>Inspecting</option>
+            <option>Proofing</option>
+            <option>Accounts / debt</option>
+            <option>Inquiries</option>
+            <option>Management</option>
+            <option>Other</option>
+          </select>
+        </div>
+      </div>
+    </section>
+
+    <div class="callout info">
+      Tip: it is all test data in there, so click around freely. Create pretend bookings, drag in a file, move a job along its journey. You cannot break anything that matters, and nothing leaves the system while we are testing.
+    </div>
+
+    <!-- Areas are injected here by script from the AREAS list, so the copy stays in one place -->
+    <div id="areas" class="space-y-5"></div>
+
+    <!-- Overall -->
+    <section class="card area" id="sec-overall" data-area="overall">
+      <div class="area-step">Last one</div>
+      <div class="area-title">Overall</div>
+      <p class="area-do">The big-picture stuff. Even a sentence or two on any of these is gold.</p>
+      <div class="mt-4 space-y-4">
+        <div>
+          <label class="field-label">If you could wave a wand and fix or add one thing first, what would it be?</label>
+          <textarea class="note-box" data-overall="one-thing" placeholder="The one thing..."></textarea>
+        </div>
+        <div>
+          <label class="field-label">Is anything missing that you use every day and could not work without?</label>
+          <textarea class="note-box" data-overall="missing" placeholder="What's not here yet..."></textarea>
+        </div>
+        <div>
+          <label class="field-label">Anything else on your mind? Likes, gripes, ideas, all welcome.</label>
+          <textarea class="note-box" data-overall="anything" placeholder="Over to you..."></textarea>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Success popup, shown over the page after a successful submit -->
+  <div class="modal-overlay" id="thanks-modal" aria-hidden="true">
+    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="thanks-title">
+      <div class="text-4xl mb-3">🙏</div>
+      <h2 class="text-xl font-bold" id="thanks-title">Thank you, your feedback has been tracked.</h2>
+      <p class="text-sm mt-2" style="color:var(--muted-foreground)">It is on its way to Nicholas and rolls straight into next week's build. You are all done here.</p>
+      <button type="button" class="modal-close" id="close-tab-btn">Close this tab</button>
+      <p class="text-xs mt-3" style="color:var(--muted-foreground)" id="close-hint" hidden>If the tab does not close on its own, you can close it the usual way.</p>
+    </div>
+  </div>
+
+  <div class="save-bar">
+    <div class="flex-1"><span class="count"><span id="answer-count">0</span> areas rated · <span id="note-count">0</span> notes</span></div>
+    <span class="toast" id="save-toast"></span>
+    <button type="button" class="secondary" id="download-btn">Download a copy</button>
+    <button type="button" class="primary" id="submit-btn">Submit feedback</button>
+  </div>
+
+  <script>
+    // ─────────────────────────────────────────────────────────────────────────
+    //  SETUP, Nicholas: do these two things before sending this out:
+    //
+    //  1. Get a free access key at https://web3forms.com (just enter your email,
+    //     they email you a key, no account needed). Paste it below. Submissions
+    //     then arrive in your inbox.
+    //  2. Host this file so the team gets a clean link. Easiest options:
+    //       - drop it on the dev box / any static host (Cloudflare Pages, Netlify drop)
+    //       - or just email the .html file; the Submit button still works when
+    //         they open it locally, because the form posts directly to Web3Forms.
+    //
+    //  Until a real key is in place, Submit falls back to "Download a copy" so
+    //  nothing is lost.
+    // ─────────────────────────────────────────────────────────────────────────
+    const WEB3FORMS_ACCESS_KEY = 'c26720d1-40e1-45ab-80f0-9e03e8342c6d'
+
+    // All the walkthrough copy lives here, one place to edit.
+    const AREAS = [
+      { id: 'signin', step: 'Area 1', title: 'Signing in and first impressions',
+        do: 'Open the portal link and sign in with the details Nicholas gave you. Before you do anything, just take it in. Does it feel like ACTPI? Is it clear where to go first?' },
+      { id: 'dashboard', step: 'Area 2', title: 'The dashboard',
+        do: 'This is your landing page. Look at the cards along the top and the recent bookings and activity below. If this were the first thing you saw each morning, does it show what you would actually want to see first?' },
+      { id: 'bookings-list', step: 'Area 3', title: 'The bookings list',
+        do: 'Open <code>Bookings</code>. Every job sits here in one list, colour-coded by status. Have a scan. Now picture it with three thousand jobs in it: what would you need to find one quickly, or to see just your jobs?' },
+      { id: 'job-view', step: 'Area 4', title: 'The job view',
+        do: 'Click into any booking to open the detailed view: the journey board across the top, the property, the contacts, documents, and the activity log down the side. Try moving a job one step along its journey. Does this one screen hold everything you would need for a job?' },
+      { id: 'new-booking', step: 'Area 5', title: 'Taking a new booking',
+        do: 'Click <code>New booking</code> and punch one in as if a client just rang. Try the <code>Create new</code> option inside the owner or solicitor picker to add someone without leaving the form. Did anything slow you down, or feel like it was missing?' },
+      { id: 'properties', step: 'Area 6', title: 'Properties',
+        do: 'Open <code>Properties</code>. Every job is filed under its address. Try making two bookings at slightly different spellings of the same address (e.g. <code>16 Elm Street</code> and <code>16 Elm St</code>) and check they end up under the one property, not two.' },
+      { id: 'job-types', step: 'Area 7', title: 'Job types and pricing',
+        do: 'Open <code>Job types</code>. This is the packages-and-pricing matrix. Are your packages and prices showing up the way you would expect? Anything about how you sell or bundle them that this does not capture?' },
+      { id: 'agencies', step: 'Area 8', title: 'Agencies, teams and agents',
+        do: 'Open <code>Agencies</code>. An agency holds teams, and teams hold agents. Try building out one of your real agencies the way it is actually structured. Does the shape fit how your agencies really work?' },
+      { id: 'contacts', step: 'Area 9', title: 'Your contact books',
+        do: 'Open the <code>Owners</code>, <code>Solicitors</code> and <code>Agents</code> lists. These are your contact books, grouped by type. Is there anything you would want to see at a glance, or search on, that is not here?' },
+      { id: 'inspectors', step: 'Area 10', title: 'Inspectors and allocation',
+        do: 'Open <code>Inspectors</code>, then on a job try <code>Assign inspector</code>. Have a think about how this compares to how you allocate inspectors today. What would it need to do to genuinely help on a busy day?' },
+    ]
+
+    const RATINGS = [
+      { key: 'good', label: '👍  Works for me', cls: 'sel-good' },
+      { key: 'meh',  label: '🤔  Bit confusing', cls: 'sel-meh' },
+      { key: 'bad',  label: '👎  Broken or wrong', cls: 'sel-bad' },
+    ]
+
+    // Short labels for the sticky section nav, keyed by area id.
+    const NAV_LABELS = { signin: 'Sign in', dashboard: 'Dashboard', 'bookings-list': 'Bookings', 'job-view': 'Job view', 'new-booking': 'New booking', properties: 'Properties', 'job-types': 'Job types', agencies: 'Agencies', contacts: 'Contacts', inspectors: 'Inspectors' }
+
+    const STORAGE_PREFIX = 'actpi-team-feedback'
+    const areasRoot = document.getElementById('areas')
+
+    // Build each area card from the AREAS list
+    AREAS.forEach(area => {
+      const sec = document.createElement('section')
+      sec.className = 'card area'
+      sec.id = 'sec-' + area.id
+      sec.dataset.area = area.id
+      sec.innerHTML = `
+        <div class="area-step">${area.step}</div>
+        <div class="area-title">${area.title}</div>
+        <p class="area-do">${area.do}</p>
+        <div class="rating" role="group" aria-label="Rating for ${area.title}"></div>
+        <textarea class="note-box" data-note="${area.id}" placeholder="What worked, what didn't, what's missing? Type as much or as little as you like."></textarea>
+      `
+      const ratingRow = sec.querySelector('.rating')
+      RATINGS.forEach(r => {
+        const b = document.createElement('button')
+        b.type = 'button'; b.className = 'rate-btn'; b.textContent = r.label; b.dataset.rate = r.key
+        ratingRow.appendChild(b)
+      })
+      areasRoot.appendChild(sec)
+    })
+
+    // ── State helpers (localStorage so progress survives a refresh) ──
+    const rk = id => `${STORAGE_PREFIX}-rate-${id}`
+    const nk = id => `${STORAGE_PREFIX}-note-${id}`
+    const ok = id => `${STORAGE_PREFIX}-overall-${id}`
+    const fk = id => `${STORAGE_PREFIX}-field-${id}`
+
+    const ratedIds = new Set()
+
+    function paintRating(sec, key) {
+      sec.querySelectorAll('.rate-btn').forEach(b => {
+        RATINGS.forEach(r => b.classList.remove(r.cls))
+        if (b.dataset.rate === key) {
+          const r = RATINGS.find(x => x.key === key)
+          b.classList.add(r.cls)
+        }
+      })
+    }
+
+    document.querySelectorAll('section[data-area]').forEach(sec => {
+      const id = sec.dataset.area
+
+      // wire ratings (overall section has none)
+      const saved = localStorage.getItem(rk(id))
+      if (saved) { paintRating(sec, saved); ratedIds.add(id) }
+      sec.querySelectorAll('.rate-btn').forEach(b => {
+        b.addEventListener('click', () => {
+          const key = b.dataset.rate
+          localStorage.setItem(rk(id), key)
+          paintRating(sec, key)
+          ratedIds.add(id)
+          updateCounts()
+        })
+      })
+
+      // wire the per-area note
+      const note = sec.querySelector('textarea[data-note]')
+      if (note) {
+        note.value = localStorage.getItem(nk(id)) || ''
+        note.classList.toggle('has-text', note.value.trim().length > 0)
+        note.addEventListener('input', () => {
+          localStorage.setItem(nk(id), note.value)
+          note.classList.toggle('has-text', note.value.trim().length > 0)
+          updateCounts()
+        })
+      }
+    })
+
+    // wire overall free-text + respondent fields
+    document.querySelectorAll('textarea[data-overall]').forEach(ta => {
+      const id = ta.dataset.overall
+      ta.value = localStorage.getItem(ok(id)) || ''
+      ta.classList.toggle('has-text', ta.value.trim().length > 0)
+      ta.addEventListener('input', () => {
+        localStorage.setItem(ok(id), ta.value)
+        ta.classList.toggle('has-text', ta.value.trim().length > 0)
+        updateCounts()
+      })
+    })
+    ;['resp-name', 'resp-team'].forEach(id => {
+      const el = document.getElementById(id)
+      el.value = localStorage.getItem(fk(id)) || ''
+      const persist = () => { localStorage.setItem(fk(id), el.value); if (el.value.trim()) el.classList.remove('invalid') }
+      el.addEventListener('input', persist)
+      el.addEventListener('change', persist)
+    })
+
+    const totalAreas = AREAS.length
+    function allNotes() {
+      let n = 0
+      document.querySelectorAll('textarea[data-note], textarea[data-overall]').forEach(t => { if (t.value.trim()) n++ })
+      return n
+    }
+    function updateCounts() {
+      document.getElementById('answer-count').textContent = ratedIds.size
+      document.getElementById('note-count').textContent = allNotes()
+      const pct = Math.round(ratedIds.size / totalAreas * 100)
+      document.getElementById('progress').style.width = pct + '%'
+      document.getElementById('progress-label').textContent = `${ratedIds.size} / ${totalAreas}`
+    }
+    updateCounts()
+
+    // ── Build a readable payload ──
+    function collect() {
+      const name = (document.getElementById('resp-name').value || '').trim() || 'Anonymous'
+      const team = (document.getElementById('resp-team').value || '').trim() || 'Unspecified'
+      const rateLabel = { good: 'Works for me', meh: 'Bit confusing', bad: 'Broken or wrong', '': 'Not rated' }
+      const lines = [`ACTPI portal feedback from ${name} (${team})`, '']
+      AREAS.forEach(a => {
+        const rate = localStorage.getItem(rk(a.id)) || ''
+        const note = (localStorage.getItem(nk(a.id)) || '').trim()
+        lines.push(`## ${a.title}`)
+        lines.push(`Rating: ${rateLabel[rate]}`)
+        if (note) lines.push(`Notes: ${note}`)
+        lines.push('')
+      })
+      lines.push('## Overall')
+      const overalls = [['one-thing', 'One thing to fix or add first'], ['missing', 'Anything missing'], ['anything', 'Anything else']]
+      overalls.forEach(([id, label]) => {
+        const v = (localStorage.getItem(ok(id)) || '').trim()
+        if (v) lines.push(`${label}: ${v}`)
+      })
+      return { name, team, text: lines.join('\n') }
+    }
+
+    function showToast(msg, kind) {
+      const t = document.getElementById('save-toast')
+      t.textContent = msg
+      t.className = 'toast show ' + (kind || 'ok')
+      setTimeout(() => t.classList.remove('show'), 3500)
+    }
+
+    // ── Download fallback (always available) ──
+    document.getElementById('download-btn').addEventListener('click', () => {
+      const { name, text } = collect()
+      const blob = new Blob([text], { type: 'text/markdown;charset=utf-8' })
+      const url = URL.createObjectURL(blob)
+      const a = document.createElement('a')
+      a.href = url
+      a.download = `actpi-feedback-${name.toLowerCase().replace(/\s+/g, '-')}.md`
+      document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(url)
+      showToast('Saved a copy to your Downloads. You can email it to Nicholas.', 'ok')
+    })
+
+    // ── Submit to the form backend ──
+    const submitBtn = document.getElementById('submit-btn')
+    submitBtn.addEventListener('click', async () => {
+      // Name and team are required before we send.
+      const nameEl = document.getElementById('resp-name')
+      const teamEl = document.getElementById('resp-team')
+      const missing = []
+      if (!nameEl.value.trim()) missing.push(nameEl)
+      if (!teamEl.value.trim()) missing.push(teamEl)
+      if (missing.length) {
+        missing.forEach(el => el.classList.add('invalid'))
+        document.getElementById('sec-you').scrollIntoView({ behavior: 'smooth', block: 'start' })
+        setTimeout(() => missing[0].focus(), 400)
+        showToast('Please add your name and team at the top before submitting.', 'err')
+        return
+      }
+
+      const { name, team, text } = collect()
+
+      if (WEB3FORMS_ACCESS_KEY.startsWith('PASTE-')) {
+        showToast('No submit key set yet. Use "Download a copy" and email it across.', 'err')
+        return
+      }
+
+      submitBtn.disabled = true
+      submitBtn.textContent = 'Sending...'
+      try {
+        const res = await fetch('https://api.web3forms.com/submit', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+          body: JSON.stringify({
+            access_key: WEB3FORMS_ACCESS_KEY,
+            subject: `ACTPI portal feedback: ${name} (${team})`,
+            from_name: 'ACTPI portal feedback form',
+            name, team,
+            message: text,
+            botcheck: ''
+          })
+        })
+        const data = await res.json()
+        if (data.success) {
+          // clear saved answers so a shared machine doesn't carry them over
+          Object.keys(localStorage).filter(k => k.startsWith(STORAGE_PREFIX)).forEach(k => localStorage.removeItem(k))
+          const modal = document.getElementById('thanks-modal')
+          modal.classList.add('show')
+          modal.setAttribute('aria-hidden', 'false')
+        } else {
+          throw new Error(data.message || 'Submit failed')
+        }
+      } catch (e) {
+        submitBtn.disabled = false
+        submitBtn.textContent = 'Submit feedback'
+        showToast('Could not send just now. Please use "Download a copy" and email it to Nicholas.', 'err')
+      }
+    })
+
+    // ── Close-tab button on the success popup ──
+    document.getElementById('close-tab-btn').addEventListener('click', () => {
+      window.open('', '_self')
+      window.close()
+      // Browsers block closing tabs they did not open via script, so show a fallback hint.
+      setTimeout(() => { document.getElementById('close-hint').hidden = false }, 300)
+    })
+
+    // ── Sticky section nav + scroll-spy ──
+    ;(function buildNav() {
+      const navRoot = document.getElementById('section-nav-links')
+      const entries = [{ id: 'sec-you', label: 'You' }]
+        .concat(AREAS.map(a => ({ id: 'sec-' + a.id, label: NAV_LABELS[a.id] || a.title })))
+        .concat([{ id: 'sec-overall', label: 'Overall' }])
+      entries.forEach(e => {
+        if (!document.getElementById(e.id)) return
+        const link = document.createElement('a')
+        link.href = '#' + e.id
+        link.textContent = e.label
+        link.dataset.target = e.id
+        navRoot.appendChild(link)
+      })
+      const links = [...navRoot.querySelectorAll('a')]
+      const secs = entries.map(e => document.getElementById(e.id)).filter(Boolean)
+      function spy() {
+        const y = window.scrollY + 130
+        let active = secs[0] && secs[0].id
+        secs.forEach(s => { if (s.offsetTop <= y) active = s.id })
+        links.forEach(l => l.classList.toggle('active', l.dataset.target === active))
+      }
+      window.addEventListener('scroll', spy, { passive: true })
+      spy()
+    })()
+  </script>
+</body>
+</html>
