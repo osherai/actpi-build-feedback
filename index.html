@@ -2,7 +2,7 @@
 <html lang="en-AU">
 <head>
   <meta charset="utf-8" />
-  <title>ACTPI portal: have a play and tell us what you think</title>
+  <title>ACTPI portal — week 2: what's new, tell us what you think</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -90,13 +90,13 @@
 <body class="min-h-screen">
   <header class="text-white" style="background: var(--sidebar)">
     <div class="max-w-3xl mx-auto px-6 py-8">
-      <p class="text-xs uppercase tracking-widest" style="color:#5EEAD4">ACTPI portal · your feedback</p>
-      <h1 class="text-3xl md:text-4xl font-bold mt-1">Have a play, tell us what you think</h1>
+      <p class="text-xs uppercase tracking-widest" style="color:#5EEAD4">ACTPI portal · week 2 feedback</p>
+      <h1 class="text-3xl md:text-4xl font-bold mt-1">What's new this week, have a play</h1>
       <p class="text-sm mt-3 opacity-90" style="color:#E7E3DE; line-height:1.6">
-        We have built the first version of the new booking portal and we would love your honest take before we build much more.
-        There are no wrong answers here. You know how the work actually runs, so if something feels clunky, confusing, or missing, that is exactly what we need to hear.
-        Work through the areas below at your own pace, give each a quick rating, and jot down anything that comes to mind.
-        Hit <strong>Submit feedback</strong> at the bottom when you are done. It saves as you go, so you can stop and come back.
+        We have shipped a big batch since last Friday: a search box that finds anything, a calendar, filtering on the bookings list,
+        more than one owner and inspector per job, and a tidier property view. Have a play with each of the areas below and tell us what you think.
+        There are no wrong answers. You know how the work actually runs, so if something feels clunky, confusing, or missing, that is exactly what we need to hear.
+        Give each a quick rating and jot down anything that comes to mind, then hit <strong>Submit feedback</strong> at the bottom. It saves as you go, so you can stop and come back.
       </p>
       <div class="mt-5 flex flex-wrap items-center gap-3 text-xs">
         <span class="px-3 py-1.5 rounded" style="background: rgba(255,255,255,0.1)">Portal: <a class="mono underline" style="color:#5EEAD4" href="https://actpi-dev.osherdigital.com" target="_blank" rel="noreferrer">actpi-dev.osherdigital.com</a></span>
@@ -146,7 +146,7 @@
     </section>
 
     <div class="callout info">
-      Tip: it is all test data in there, so click around freely. Create pretend bookings, drag in a file, move a job along its journey. You cannot break anything that matters, and nothing leaves the system while we are testing.
+      If you tested last week, this is mostly new ground, so it is worth a fresh look. It is all test data in there, so click around freely: create pretend bookings, drag in a file, move a job along its journey. You cannot break anything that matters, and nothing leaves the system while we are testing (confirmation emails open in a preview tab rather than actually sending).
     </div>
 
     <!-- Areas are injected here by script from the AREAS list, so the copy stays in one place -->
@@ -212,26 +212,22 @@
 
     // All the walkthrough copy lives here, one place to edit.
     const AREAS = [
-      { id: 'signin', step: 'Area 1', title: 'Signing in and first impressions',
-        do: 'Open the portal link and sign in with the details Nicholas gave you. Before you do anything, just take it in. Does it feel like ACTPI? Is it clear where to go first?' },
-      { id: 'dashboard', step: 'Area 2', title: 'The dashboard',
-        do: 'This is your landing page. Look at the cards along the top and the recent bookings and activity below. If this were the first thing you saw each morning, does it show what you would actually want to see first?' },
-      { id: 'bookings-list', step: 'Area 3', title: 'The bookings list',
-        do: 'Open <code>Bookings</code>. Every job sits here in one list, colour-coded by status. Have a scan. Now picture it with three thousand jobs in it: what would you need to find one quickly, or to see just your jobs?' },
-      { id: 'job-view', step: 'Area 4', title: 'The job view',
-        do: 'Click into any booking to open the detailed view: the journey board across the top, the property, the contacts, documents, and the activity log down the side. Try moving a job one step along its journey. Does this one screen hold everything you would need for a job?' },
-      { id: 'new-booking', step: 'Area 5', title: 'Taking a new booking',
-        do: 'Click <code>New booking</code> and punch one in as if a client just rang. Try the <code>Create new</code> option inside the owner or solicitor picker to add someone without leaving the form. Did anything slow you down, or feel like it was missing?' },
-      { id: 'properties', step: 'Area 6', title: 'Properties',
-        do: 'Open <code>Properties</code>. Every job is filed under its address. Try making two bookings at slightly different spellings of the same address (e.g. <code>16 Elm Street</code> and <code>16 Elm St</code>) and check they end up under the one property, not two.' },
-      { id: 'job-types', step: 'Area 7', title: 'Job types and pricing',
-        do: 'Open <code>Job types</code>. This is the packages-and-pricing matrix. Are your packages and prices showing up the way you would expect? Anything about how you sell or bundle them that this does not capture?' },
-      { id: 'agencies', step: 'Area 8', title: 'Agencies, teams and agents',
-        do: 'Open <code>Agencies</code>. An agency holds teams, and teams hold agents. Try building out one of your real agencies the way it is actually structured. Does the shape fit how your agencies really work?' },
-      { id: 'contacts', step: 'Area 9', title: 'Your contact books',
-        do: 'Open the <code>Owners</code>, <code>Solicitors</code> and <code>Agents</code> lists. These are your contact books, grouped by type. Is there anything you would want to see at a glance, or search on, that is not here?' },
-      { id: 'inspectors', step: 'Area 10', title: 'Inspectors and allocation',
-        do: 'Open <code>Inspectors</code>, then on a job try <code>Assign inspector</code>. Have a think about how this compares to how you allocate inspectors today. What would it need to do to genuinely help on a busy day?' },
+      { id: 'search-all', step: 'Area 1 · New', title: 'Search across everything',
+        do: 'Use the <code>Search…</code> box at the top of the left menu (or press <code>⌘K</code> / <code>Ctrl+K</code>). Search an address, an owner, an agent, an agency. Results are grouped by type and click straight through to the record. Try finding the same job three different ways. Is this the "find anything" button you would reach for?' },
+      { id: 'bookings-filters', step: 'Area 2 · New', title: 'Finding jobs in the bookings list',
+        do: 'Open <code>Bookings</code>. Use the search and the <code>Status</code> and <code>Scheduling</code> dropdowns to narrow things down, and search by owner, agent, solicitor or address. Picture three thousand jobs in here: can you carve it down to just the ones you care about?' },
+      { id: 'calendar', step: 'Area 3 · New', title: 'The calendar',
+        do: 'In <code>Bookings</code>, switch to the <code>Calendar</code> tab. Flick between <code>Week</code> and <code>Day</code>, step through with the arrows, and notice jobs are colour-coded by inspector. Click an empty time slot to start a booking pre-filled with that date and time. How close is this to how you picture the day?' },
+      { id: 'multi-owner', step: 'Area 4 · New', title: 'More than one owner on a job',
+        do: 'Open a booking and hit <code>Edit</code>. Add a second owner, mark one as <code>Primary</code>, then save and reopen to check it stuck. Plenty of jobs have two owners (couples, multiple vendors). Does this handle that the way you would expect?' },
+      { id: 'property-owners', step: 'Area 5 · New', title: 'The property and owner view',
+        do: 'Open <code>Properties</code> and click into one. Everyone tied to that address now shows in the one place, pulled from its bookings, alongside the job history. Is this the "everything about this address at a glance" view you would want?' },
+      { id: 'inspectors', step: 'Area 6', title: 'Inspectors and allocation',
+        do: 'On a job, try <code>Assign inspector</code>, add a second inspector, and set a difficulty rating. Think about a busy day: what would this need to do to genuinely help you allocate the right person?' },
+      { id: 'new-booking', step: 'Area 7', title: 'Taking a new booking',
+        do: 'Click <code>New booking</code> and punch one in as if a client just rang: standard time slots, more than one owner, a preferred name. Heads up: a full click-the-calendar booking form is coming next. For now, tell us what this form is still missing for a real booking.' },
+      { id: 'comms', step: 'Area 8', title: 'Who gets the confirmation',
+        do: 'On the booking form, look at the confirmation recipients: owner, agent and solicitor are ticked by default, and you can untick anyone who should not get it. Does that match how you decide who hears about a job?' },
     ]
 
     const RATINGS = [
@@ -241,9 +237,9 @@
     ]
 
     // Short labels for the sticky section nav, keyed by area id.
-    const NAV_LABELS = { signin: 'Sign in', dashboard: 'Dashboard', 'bookings-list': 'Bookings', 'job-view': 'Job view', 'new-booking': 'New booking', properties: 'Properties', 'job-types': 'Job types', agencies: 'Agencies', contacts: 'Contacts', inspectors: 'Inspectors' }
+    const NAV_LABELS = { 'search-all': 'Search', 'bookings-filters': 'Filters', calendar: 'Calendar', 'multi-owner': 'Owners', 'property-owners': 'Properties', inspectors: 'Inspectors', 'new-booking': 'New booking', comms: 'Confirmations' }
 
-    const STORAGE_PREFIX = 'actpi-team-feedback'
+    const STORAGE_PREFIX = 'actpi-team-feedback-w2'
     const areasRoot = document.getElementById('areas')
 
     // Build each area card from the AREAS list
