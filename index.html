@@ -2,7 +2,7 @@
 <html lang="en-AU">
 <head>
   <meta charset="utf-8" />
-  <title>ACTPI portal — week 2: what's new, tell us what you think</title>
+  <title>ACTPI portal — week 3: what's new, tell us what you think</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -90,13 +90,15 @@
 <body class="min-h-screen">
   <header class="text-white" style="background: var(--sidebar)">
     <div class="max-w-3xl mx-auto px-6 py-8">
-      <p class="text-xs uppercase tracking-widest" style="color:#5EEAD4">ACTPI portal · week 2 feedback</p>
+      <p class="text-xs uppercase tracking-widest" style="color:#5EEAD4">ACTPI portal · week 3 feedback</p>
       <h1 class="text-3xl md:text-4xl font-bold mt-1">What's new this week, have a play</h1>
       <p class="text-sm mt-3 opacity-90" style="color:#E7E3DE; line-height:1.6">
-        We have shipped a big batch since last Friday: a search box that finds anything, a calendar, filtering on the bookings list,
-        more than one owner and inspector per job, and a tidier property view. Have a play with each of the areas below and tell us what you think.
-        There are no wrong answers. You know how the work actually runs, so if something feels clunky, confusing, or missing, that is exactly what we need to hear.
-        Give each a quick rating and jot down anything that comes to mind, then hit <strong>Submit feedback</strong> at the bottom. It saves as you go, so you can stop and come back.
+        Another big week. Since last Friday we have rebuilt the booking wizard end to end, with live ACT address lookup, a difficulty
+        matrix that rates a job from its property facts, duplicate-contact detection, the new title-holder field, a calendar coloured by
+        complexity with an inspectors-down-the-side view, and a fuller dashboard. A few of these landed straight off Friday morning's meeting.
+        Have a play with each area below and tell us what you think. There are no wrong answers. You know how the work actually runs, so if
+        something feels clunky, confusing, or missing, that is exactly what we need to hear. Give each a quick rating and jot down anything
+        that comes to mind, then hit <strong>Submit feedback</strong> at the bottom. It saves as you go, so you can stop and come back.
       </p>
       <div class="mt-5 flex flex-wrap items-center gap-3 text-xs">
         <span class="px-3 py-1.5 rounded" style="background: rgba(255,255,255,0.1)">Portal: <a class="mono underline" style="color:#5EEAD4" href="https://actpi-dev.osherdigital.com" target="_blank" rel="noreferrer">actpi-dev.osherdigital.com</a></span>
@@ -212,22 +214,22 @@
 
     // All the walkthrough copy lives here, one place to edit.
     const AREAS = [
-      { id: 'search-all', step: 'Area 1 · New', title: 'Search across everything',
-        do: 'Use the <code>Search…</code> box at the top of the left menu (or press <code>⌘K</code> / <code>Ctrl+K</code>). Search an address, an owner, an agent, an agency. Results are grouped by type and click straight through to the record. Try finding the same job three different ways. Is this the "find anything" button you would reach for?' },
-      { id: 'bookings-filters', step: 'Area 2 · New', title: 'Finding jobs in the bookings list',
-        do: 'Open <code>Bookings</code>. Use the search and the <code>Status</code> and <code>Scheduling</code> dropdowns to narrow things down, and search by owner, agent, solicitor or address. Picture three thousand jobs in here: can you carve it down to just the ones you care about?' },
-      { id: 'calendar', step: 'Area 3 · New', title: 'The calendar',
-        do: 'In <code>Bookings</code>, switch to the <code>Calendar</code> tab. Flick between <code>Week</code> and <code>Day</code>, step through with the arrows, and notice jobs are colour-coded by inspector. Click an empty time slot to start a booking pre-filled with that date and time. How close is this to how you picture the day?' },
-      { id: 'multi-owner', step: 'Area 4 · New', title: 'More than one owner on a job',
-        do: 'Open a booking and hit <code>Edit</code>. Add a second owner, mark one as <code>Primary</code>, then save and reopen to check it stuck. Plenty of jobs have two owners (couples, multiple vendors). Does this handle that the way you would expect?' },
-      { id: 'property-owners', step: 'Area 5 · New', title: 'The property and owner view',
-        do: 'Open <code>Properties</code> and click into one. Everyone tied to that address now shows in the one place, pulled from its bookings, alongside the job history. Is this the "everything about this address at a glance" view you would want?' },
-      { id: 'inspectors', step: 'Area 6', title: 'Inspectors and allocation',
-        do: 'On a job, try <code>Assign inspector</code>, add a second inspector, and set a difficulty rating. Think about a busy day: what would this need to do to genuinely help you allocate the right person?' },
-      { id: 'new-booking', step: 'Area 7', title: 'Taking a new booking',
-        do: 'Click <code>New booking</code> and punch one in as if a client just rang: standard time slots, more than one owner, a preferred name. Heads up: a full click-the-calendar booking form is coming next. For now, tell us what this form is still missing for a real booking.' },
-      { id: 'comms', step: 'Area 8', title: 'Who gets the confirmation',
-        do: 'On the booking form, look at the confirmation recipients: owner, agent and solicitor are ticked by default, and you can untick anyone who should not get it. Does that match how you decide who hears about a job?' },
+      { id: 'booking-wizard', step: 'Area 1 · Rebuilt', title: 'Taking a booking, start to finish',
+        do: 'Click <code>New booking</code> and punch one in as if a client just rang. It is now three clean steps, <code>Basics → Details → Review</code>. Start typing the property address and pick it from the list: suburb, block and section fill themselves from the ACT Government dataset. Then schedule it on the built-in calendar, where the slot is sized to the job and drags to where you want it. Does this flow match how you actually take a booking on the phone?' },
+      { id: 'owners-title', step: 'Area 2 · New', title: 'Owners and the title holder',
+        do: 'Add one or more owners. Each owner now has its own tick for whether they get correspondence (no more "primary" owner). Underneath, the new <code>Title holder</code> field is free text for the name on the deeds: click an owner bubble to fill it, or type a trust or estate. It stays editable at any stage. Does this cover the messy real cases (spouse-only titles, trusts, both names on the title)?' },
+      { id: 'duplicate', step: 'Area 3 · New', title: 'Duplicate-contact detection',
+        do: 'Try adding an owner whose name, email or phone is already on file. The portal should warn you and offer the existing record instead of creating a second copy. Try hard to end up with two of the same person, the way it has happened before. Can you?' },
+      { id: 'matrix', step: 'Area 4 · New', title: 'The difficulty matrix',
+        do: 'On the <code>Details</code> step, set the five property facts (type, size, age, compliance risk, subfloor). The portal works out easy, medium or hard, with <code>Size / Termite / Comply</code> bars showing why, and you can override it. Rob, the questions for you: are these the right five inputs, where should the easy / medium / hard lines sit, and should the answers be remembered per address for repeat bookings?' },
+      { id: 'calendar', step: 'Area 5 · Reworked', title: 'The calendar',
+        do: 'In <code>Bookings → Calendar</code>, tiles are now coloured by difficulty (green / amber / red), not by inspector. Try the <code>Day</code> view (inspectors down the side, time across the top, per Rob\'s sketch) and, on the <code>Week</code> view, the new <code>By inspector</code> toggle. The week now runs Monday to Friday. Is this the at-a-glance picture of the day you were after?' },
+      { id: 'repeat-flag', step: 'Area 6 · New', title: 'The "been here before" flag',
+        do: 'Look for the red <code>Repeat</code> marker on a job at a property the portal has visited before. It shows on the calendar, the bookings list, the dashboard and the job page. (For now it knows portal-era jobs; the full history comes with the Dropbox/OneDrive import.) Is it showing up where you would want to catch it?' },
+      { id: 'access', step: 'Area 7 · New', title: 'Access on a booking',
+        do: 'On the <code>Details</code> step, set how the inspector gets in: agent, owner, tenant, lockbox (with a code) or key pick-up (with a location), plus a short heads-up note. The note and a key icon show front and centre on the calendar tile. Does this capture how you record access today?' },
+      { id: 'dashboard', step: 'Area 8 · New', title: 'The dashboard',
+        do: 'Open the <code>Dashboard</code>. There is now a today\'s-schedule strip and a "this week" summary: the difficulty mix across the week, plus unrated and repeat-visit counts. Is this a useful first thing to land on when you open the portal of a morning?' },
     ]
 
     const RATINGS = [
@@ -237,9 +239,9 @@
     ]
 
     // Short labels for the sticky section nav, keyed by area id.
-    const NAV_LABELS = { 'search-all': 'Search', 'bookings-filters': 'Filters', calendar: 'Calendar', 'multi-owner': 'Owners', 'property-owners': 'Properties', inspectors: 'Inspectors', 'new-booking': 'New booking', comms: 'Confirmations' }
+    const NAV_LABELS = { 'booking-wizard': 'Booking', 'owners-title': 'Owners', duplicate: 'Duplicates', matrix: 'Matrix', calendar: 'Calendar', 'repeat-flag': 'Repeat flag', access: 'Access', dashboard: 'Dashboard' }
 
-    const STORAGE_PREFIX = 'actpi-team-feedback-w2'
+    const STORAGE_PREFIX = 'actpi-team-feedback-w3'
     const areasRoot = document.getElementById('areas')
 
     // Build each area card from the AREAS list
